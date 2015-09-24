@@ -1,6 +1,7 @@
+THIS GAME IS CURRENTLY UNDER CONSTRUCTION AND MAY NOT BE STABLE AND INCLUDE LOTS OF BUGS
+
+
 frontend-nanodegree-arcade-game
 ===============================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
 
-for self-checking their submission.
