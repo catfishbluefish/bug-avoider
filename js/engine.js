@@ -260,7 +260,7 @@ var Engine = (function(global) {
 
    //START MENU
     document.getElementById('start').onclick = function() {
-        gamePaused = false;
+        initialStart();
     };
 
     //PAUSE BUTTON
