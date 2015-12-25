@@ -1,10 +1,11 @@
+<<<<<<< HEAD
 # Project 3 Arcade Game
 ## Udacity Front End Nanodegree
 ***
 ***
 ## How to Play:
 * Objective: Guide character to the water to gain a point and avoid enemy bugs
-* Go to : <url>
+* Go to : <http://catfishbluefish.github.io/bug-avoider/>
 * Select Character to start game
 * Use pause button to freeze the game
 * Use play button to unfreeze
@@ -15,7 +16,7 @@
 ***
 ***
 
-## Development: 
+## Development:
 #### Learning Objectives:
 Create a Javascript and HTML5 Canvas Frogger clone
 
@@ -39,3 +40,8 @@ Repo forked from <https://github.com/udacity/frontend-nanodegree-arcade-game> wh
 * Music can become irritating
 * Game does not resize properly with Chrome dev tools open
 * Weird sizing occasionally happens on odd browser sizes, revealing content behind it
+=======
+THIS GAME IS CURRENTLY UNDER CONSTRUCTION AND MAY NOT BE STABLE AND INCLUDE LOTS OF BUGS
+
+
+
