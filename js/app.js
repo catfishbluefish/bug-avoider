@@ -1,7 +1,8 @@
-//Sound
+//Sound Effects
 var hurt = new Audio('audio/hurt.mp3'),
-    step = new Audio('audio/go.mp3');
-    
+    step = new Audio('audio/go.mp3'),
+    success = new Audio('audio/success.mp3');
+
 var player;
 
 // Enemies our player must avoid
@@ -15,18 +16,25 @@ var Enemy = function(x, y, speed) {
     Resources.load(this.sprite);
 };
 
+//Sets a random speed for each spwaned enemy uncomment console.log to view generated speed values
 Enemy.prototype.setEnemySpeed = function() {
-    this.speed = (Math.floor(Math.random() * (max-min) + min));
+    if(level === 0) {
+        this.speed = (Math.floor(Math.random() * (max-min) + min));
+    } else {
+        this.speed = (Math.floor(Math.random() * (max-min) + min));
+    }
+   //console.log(this.speed);   //for debugging
     return this.speed;
 };
 
-
+//Sets the random location for each spawned enemy
 Enemy.prototype.setEnemyY = function() {
     var maxY = 250;
     var minY = 100;
-    this.y = Math.floor(Math.random() * (maxY - minY) + minY)
+    this.y = Math.floor(Math.random() * (maxY - minY) + minY);
     return this.y;
 };
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -39,8 +47,8 @@ Enemy.prototype.update = function(dt) {
         this.x = -200;
         this.speed = this.setEnemySpeed();
         this.y = this.setEnemyY();
-        
-    }    
+
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -57,24 +65,21 @@ Enemy.prototype.render = function() {
 
 
 
-
-
-
 //PLAYER
-
+//loads player selected sprite from engine.js
 var Player = function(chosenSprite) {
-
     this.sprite = chosenSprite;
     Resources.load(this.sprite);
     this.x = 200;
     this.y = 400;
-
 };
 
-
+//Check player position, reset and add to score if they reached the top
 Player.prototype.update = function(x, y) {
-    if(this.y == 0) {
-        this.reset();
+    if(this.y === 0) {
+        success.play();
+        level = level + 1;
+        this.reset(level);
     } else {
         this.render(x,y);
     }
@@ -85,31 +90,33 @@ Player.prototype.render = function(x, y) {
 };
 
 Player.prototype.handleInput = function(key) {
-
     step.play();
     if(!gamePaused) {
         if(key == 'left' && this.x > 0) {
             this.x = this.x - 100;
-            console.log( "Left" + this.x);        
+            console.log( "Left" + this.x);
         } else if(key == 'up' && this.y > 0) {
             this.y = this.y - 100;
             console.log("Up" + this.y);
         } else if(key == 'right' && this.x < 400) {
             this.x = this.x + 100;
             console.log("Right" + this.x);
-        } else if(key == 'down' && this.y < 400) { 
+        } else if(key == 'down' && this.y < 400) {
             this.y = this.y + 100;
             console.log("Down" + this.y);
-        } 
+        }
         player.update(this.x, this.y);
-    }    
+    }
 };
 
+//Respawn character at beginning position
 Player.prototype.reset = function() {
+   //console.log(level); //for debugging
     this.x = 200;
     this.y = 400;
     this.update();
-}
+    return(level);
+};
 
 
 // Now instantiate your objects.
@@ -125,8 +132,6 @@ var allEnemies = [
     ];
 
 
-
-
 Enemy.prototype.checkCollisions = function() {
     if(player.x < this.x + 75 &&
         player.x + 65 > this.x &&
@@ -139,9 +144,6 @@ Enemy.prototype.checkCollisions = function() {
     }
 };
 
-
-
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -151,6 +153,6 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-        player.handleInput(allowedKeys[e.keyCode]);
+    player.handleInput(allowedKeys[e.keyCode]);
 
 });

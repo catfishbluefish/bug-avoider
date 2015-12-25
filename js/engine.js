@@ -16,8 +16,7 @@
 var gamePaused,
     dt,
     life = 5,
-    level;
-    
+    level = 0;
 
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
@@ -30,10 +29,8 @@ var Engine = (function(global) {
     canvas = doc.createElement('canvas'),
     ctx = canvas.getContext('2d'),
     lastTime;
-        
 
-    
-    
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -51,18 +48,22 @@ var Engine = (function(global) {
         canvas.height = 606;
         doc.body.appendChild(canvas);
 
-        game = setTimeout(dt, 1000 / 30);    
+        game = setTimeout(dt, 1000 / 30);
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
          if(!gamePaused) {
             update(dt);
-            
-         }   
-         render();
-         level = 1;
+
+         }
+
+         if(life > 0)
+         {
+            render();
+         }
+
         levels(level);
-        lives(life);
+        lives(life, level);
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
          */
@@ -74,20 +75,55 @@ var Engine = (function(global) {
         win.requestAnimationFrame(main);
     }
 
-    function levels(level) {
-        
-        ctx.font = "30pt Monospace";
-        ctx.textAlign = "left";
-        ctx.fillStyle = "white";
-        ctx.fillText(("Level: " + level), 10, 45);
+
+    function gameOver(level) {
+        audio.pause();
+        gameEnd.play();
+        var title = "Game Over";
+        function centerText(ctx, text, y) {
+            var measurement = ctx.measureText(text);
+            var x = (ctx.canvas.width - measurement.width) / 2;
+            ctx.fillText(text, x, y);
+          }
+
+          function draw(ctx, elapsed) {
+
+            var y = ctx.canvas.height / 2;
+            var color = 'white';
+
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.fillStyle = 'white';
+            ctx.font = '48px monospace';
+            centerText(ctx, title, y);
+
+            ctx.fillStyle = color;
+            ctx.font = '24px monospace';
+            centerText(ctx, 'Score:' + level, y + 40);
+
+            ctx.fillStyle = color;
+            ctx.font = "28px monospace";
+            centerText(ctx, 'Click below to restart', y + 90);
+          }
+          centerText(ctx, title, 0);
+          draw(ctx);
     }
 
-    function lives(life) {
-
+    function levels(level) {
         ctx.font = "30pt Monospace";
         ctx.textAlign = "left";
         ctx.fillStyle = "white";
-        ctx.fillText(("Lives: " + life), 300, 45);
+        ctx.fillText(("Score: " + level), 10, 45);
+    }
+
+    function lives(life, level) {
+        if(life > 0) {
+            ctx.font = "30pt Monospace";
+            ctx.textAlign = "left";
+            ctx.fillStyle = "white";
+            ctx.fillText(("Lives: " + life), 300, 45);
+        } else if(life <= 0) {
+            gameOver(level);
+        }
     }
 
     /* This function does some initial setup that should only occur once,
@@ -95,7 +131,6 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        
         reset();
         lastTime = Date.now();
         player = new Player(chosenSprite);
@@ -192,14 +227,6 @@ var Engine = (function(global) {
         player.render();
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-        // noop
-    }
-
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
@@ -221,7 +248,6 @@ var Engine = (function(global) {
         gamePaused = true;
         audio.pause();
         titleTheme.pause();
-
     }
 
     function initialStart() {
@@ -230,45 +256,47 @@ var Engine = (function(global) {
         titleTheme.pause();
         audio.play();
         init();
-    };
+    }
 
 
    //START MENU
     document.getElementById('start').onclick = function() {
-        initialStart();
-
+        gamePaused = false;
     };
-
-  
 
     //PAUSE BUTTON
     document.getElementById('pause').onclick = function() {
         pauseGame();
-    }
+    };
+
+    //RESTART BUTTON
+    document.getElementById('restart').onclick = function() {
+        location.reload();
+    };
 
 
+    //Assigns player chosen sprite to game
     document.getElementById('char1').onclick = function () {
         chosenSprite = 'images/char-cat-girl.png';
         initialStart();
-        console.log('Cat Girl');
-        
-    }
+        //console.log('Cat Girl'); //debugging
+    };
     document.getElementById('char2').onclick = function () {
         chosenSprite = 'images/char-pink-girl.png';
         initialStart();
-    }
+    };
     document.getElementById('char3').onclick = function() {
         chosenSprite = 'images/char-boy.png';
         initialStart();
-    }
+    };
     document.getElementById('char4').onclick = function() {
         chosenSprite = 'images/char-horn-girl.png';
         initialStart();
-    }
+    };
     document.getElementById('char5').onclick = function() {
         chosenSprite = 'images/char-princess-girl.png';
         initialStart();
-    }
+    };
 
 
 
@@ -319,16 +347,16 @@ var Engine = (function(global) {
             ]
              var x = 100;
             for(var i = 0; i < characters.length; i++) {
-                
+
                if(i == 2) {
                     ctx.drawImage(Resources.get(characters[i]), x, 350);
                } else {
-                    ctx.drawImage(Resources.get(characters[i]), x, 400);     
-               } 
+                    ctx.drawImage(Resources.get(characters[i]), x, 400);
+               }
                x = x + 50;
             }
 
-           
+
 
             document.addEventListener('keyup', function(e) {
 
@@ -341,42 +369,14 @@ var Engine = (function(global) {
 
         }
         chooseCharacter();
-        
+
 
 };
 */
 
 })(this);
 
-//Assign Player Chosen Sprite 
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//Assign Player Chosen Sprite
 
 
 

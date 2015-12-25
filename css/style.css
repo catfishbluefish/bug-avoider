@@ -1,13 +1,13 @@
 @import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
 
 
-
 body {
     text-align: center;
     background-color: #00CCFF;
     font-family: 'VT323', monospace ;
     color: white;
- }  
+ }
+
 
 canvas {
 	background-color: #00CCFF;
@@ -21,28 +21,31 @@ canvas {
     bottom: 0;
     left: 0;
     right: 0;
-
 }
+
 
 .controls {
-	margin-top: 10%;
+	margin-top: 5%;
 }
 
+
 button {
-	left-margin: auto;
-	right-margin: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
+
 
 button :hover {
 	margin-top: -5%;
 }
 
+
 .char {
 	background-color: transparent;
 	border: none;
 	outline: none;
-
 }
+
 
 h1 {
 	margin-top: 20%;
@@ -50,14 +53,15 @@ h1 {
 	font-weight: 300;
 }
 
+
 h3 {
 	font-weight: 200;
 	color: white;
-
 }
 
+
 h2 {
-	
+
 	display: inline;
 	font-weight: 300;
 }
