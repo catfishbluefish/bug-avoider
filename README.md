@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Project 3 Arcade Game
 ## Udacity Front End Nanodegree
 ***
@@ -40,8 +39,7 @@ Repo forked from <https://github.com/udacity/frontend-nanodegree-arcade-game> wh
 * Music can become irritating
 * Game does not resize properly with Chrome dev tools open
 * Weird sizing occasionally happens on odd browser sizes, revealing content behind it
-=======
-THIS GAME IS CURRENTLY UNDER CONSTRUCTION AND MAY NOT BE STABLE AND INCLUDE LOTS OF BUGS
+
 
 
 
