@@ -14,6 +14,7 @@
  * a little simpler to work with.
  */
 var gamePaused,
+    gameStarted = false,
     dt,
     life = 5,
     level = 0;
@@ -222,7 +223,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
     }
 
@@ -249,9 +249,20 @@ var Engine = (function(global) {
         titleTheme.pause();
     }
 
-    function initialStart() {
-        console.log("start");
+    function unPauseGame() {
         gamePaused = false;
+        if(gameStarted) {
+            console.log(gameStarted);
+            audio.play();
+        } else {
+            titleTheme.play();
+        }
+    }
+
+    function initialStart() {
+        //console.log("start"); //debug
+        gamePaused = false;
+        gameStarted = true;
         titleTheme.pause();
         audio.play();
         init();
@@ -260,7 +271,8 @@ var Engine = (function(global) {
 
    //START MENU
     document.getElementById('start').onclick = function() {
-        initialStart();
+        gamePaused = false;
+        audio.play();
     };
 
     //PAUSE BUTTON

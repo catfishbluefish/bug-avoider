@@ -1,7 +1,5 @@
 //Sound Effects
-var hurt = new Audio('audio/hurt.mp3'),
-    step = new Audio('audio/go.mp3'),
-    success = new Audio('audio/success.mp3');
+var soundEffects = ['audio/hurt.mp3', 'audio/go.mp3', 'audio/success.mp3'];
 
 var player;
 
@@ -41,10 +39,12 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    if(this.x < 500) {
+    var endOfScreen = 500;
+    var enemySpawnPoint = -200;
+    if(this.x < endOfScreen) {
         this.x = this.x + (dt * this.speed);
     } else {
-        this.x = -200;
+        this.x = enemeySpawnPoint;
         this.speed = this.setEnemySpeed();
         this.y = this.setEnemyY();
 
@@ -56,12 +56,6 @@ Enemy.prototype.render = function() {
  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
-
-//END ENEMY
 
 
 
@@ -77,7 +71,7 @@ var Player = function(chosenSprite) {
 //Check player position, reset and add to score if they reached the top
 Player.prototype.update = function(x, y) {
     if(this.y === 0) {
-        success.play();
+        soundEffects[2].play();
         level = level + 1;
         this.reset(level);
     } else {
@@ -90,7 +84,7 @@ Player.prototype.render = function(x, y) {
 };
 
 Player.prototype.handleInput = function(key) {
-    step.play();
+    soundEffects[1].play();
     if(!gamePaused) {
         if(key == 'left' && this.x > 0) {
             this.x = this.x - 100;
@@ -105,7 +99,7 @@ Player.prototype.handleInput = function(key) {
             this.y = this.y + 100;
             console.log("Down" + this.y);
         }
-        player.update(this.x, this.y);
+        this.update(this.x, this.y);
     }
 };
 
@@ -122,6 +116,7 @@ Player.prototype.reset = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+
 var allEnemies = [
     new Enemy(-300, Math.floor(Math.random() * (300 - 100) * 100)),
     new Enemy(-300, 100),
@@ -137,7 +132,7 @@ Enemy.prototype.checkCollisions = function() {
         player.x + 65 > this.x &&
         player.y < this.y + 50 &&
         player.y + 70 > this.y) {
-        hurt.play();
+        soundEffects[0].play();
         life = life - 1;
         player.reset();
         return(life);

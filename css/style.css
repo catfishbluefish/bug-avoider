@@ -1,17 +1,17 @@
-@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
+@import url(//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css);
 
 
 body {
     text-align: center;
-    background-color: #00CCFF;
-    font-family: 'VT323', monospace ;
+    background-color: #00ccff;
+    font-family: "VT323", monospace ;
     color: white;
  }
 
 
 canvas {
-	background-color: #00CCFF;
-	   padding: 0;
+	background-color: #00ccff;
+	padding: 0;
     margin: auto;
     display: block;
     width: 505px;
